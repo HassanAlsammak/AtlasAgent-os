@@ -24,7 +24,7 @@ python -m unittest discover -s tests -v
 - **Capability allowlists:** deny unapproved capability declarations (not a sandbox).
 - **Audit events:** record task outcome and execution time, without automatically recording prompts.
 - **Guardian (experimental):** offline rule-based unified-diff review of added lines for selected risky patterns.
-- **Human approval gates (experimental):** one-time tokens bound to exact tool arguments; [usage and limitations](docs/approvals.md).\n- **Provider adapter (optional):** OpenAI-compatible HTTPS chat completions with input limits and environment-based credentials.
+- **Computer-use foundation (experimental):** mock desktop adapter, bounded steps and approval-gated actions; [architecture and limitations](docs/computer-use.md). No real desktop control yet.\n- **Human approval gates (experimental):** one-time tokens bound to exact tool arguments; [usage and limitations](docs/approvals.md).\n- **Provider adapter (optional):** OpenAI-compatible HTTPS chat completions with input limits and environment-based credentials.
 - **CI:** unit tests on Python 3.10 and 3.12.
 
 ## Python API
@@ -40,7 +40,7 @@ for result in results:
     print(result.role, result.output)
 ```
 
-## Guardian
+## Computer-use mock demo\n\n```bash\npython examples/computer_demo.py\n```\n\nThis demonstrates approval-gated actions against a mock desktop; it does not operate your actual computer.\n\n## Guardian
 
 ```python
 from atlasagent.guardian import review_unified_diff

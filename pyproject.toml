@@ -1,0 +1,16 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "atlasagent-os"
+version = "0.1.0"
+description = "A small, auditable, permission-aware multi-agent task runner"
+readme = "README.md"
+requires-python = ">=3.10"
+license = {text = "MIT"}
+authors = [{name = "AtlasAgent OS contributors"}]
+keywords = ["agents", "orchestration", "open-source"]
+
+[tool.setuptools.packages.find]
+include = ["atlasagent*"]

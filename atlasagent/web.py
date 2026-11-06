@@ -10,8 +10,8 @@ import os
 import secrets
 import time
 
-from fastapi import FastAPI, Header, HTTPException, Request
-from fastapi.responses import FileResponse
+from fastapi import FastAPI, HTTPException, Request
+from fastapi.responses import FileResponse, JSONResponse
 from pydantic import BaseModel, Field
 
 from .core import Runner, Task, template_agent
@@ -39,7 +39,7 @@ async def local_security(request: Request, call_next):
     # Default bind is loopback. Require token when explicitly configured.
     if request.url.path.startswith("/api/") and request.url.path != "/api/health":
         if API_TOKEN and not secrets.compare_digest(request.headers.get("x-atlas-token", ""), API_TOKEN):
-            raise HTTPException(status_code=401, detail="Invalid API token")
+            return JSONResponse({"detail": "Invalid API token"}, status_code=401)
         client = request.client.host if request.client else "unknown"
         now = time.monotonic()
         recent = [t for t in _hits.get(client, []) if now - t < WINDOW_SECONDS]

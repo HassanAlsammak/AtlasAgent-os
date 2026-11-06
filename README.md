@@ -63,3 +63,7 @@ No shell commands, code, or network calls are executed by the default runner. Ex
 See [CONTRIBUTING.md](CONTRIBUTING.md). Planned: explicit approval gates, redacted durable audit logs, bounded tool execution, benchmarks, and optional PR integration. Issues and tested pull requests are welcome.
 
 MIT licensed.
+
+## Experimental local desktop control
+
+On your own Windows computer install `python -m pip install -e ".[desktop]"` and run `python -m atlasagent.desktop_cli`. This opt-in CLI supports real mouse clicks, typing and scrolling, with explicit approval for every action. It is **not yet autonomous**, cannot interpret screenshots, and is **not exposed through the web API**. See [desktop setup and safety](docs/desktop.md).

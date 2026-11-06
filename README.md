@@ -8,7 +8,7 @@ Python 3.10+ · MIT · Standard library only · Open source
 
 > **Prototype:** The default agents are deterministic offline examples, not autonomous AI. An optional HTTPS chat-completions adapter is available, but you must wire it to your own handler. Guardian's rules are heuristic, not a security audit.
 
-## Quick start
+## Web workspace (v0.3.0)\n\nRun locally on Windows or Linux:\n\n```bash\npython -m pip install -e ".[web,test]"\npython -m uvicorn atlasagent.web:app --host 127.0.0.1 --port 8000\n```\n\nOpen **http://127.0.0.1:8000** for the responsive agent dashboard, offline workflow runner and Guardian diff scanner. See [Web setup and security](docs/web.md). Do not expose the demo publicly.\n\n## Quick start
 
 ```bash
 git clone https://github.com/HassanAlsammak/AtlasAgent-os.git

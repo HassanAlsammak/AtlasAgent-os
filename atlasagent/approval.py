@@ -9,6 +9,7 @@ from typing import Callable, Any
 import hashlib
 import json
 import secrets
+import time
 
 class ApprovalRequired(PermissionError):
     pass
@@ -31,6 +32,18 @@ class ToolBroker:
     tools: dict[str, Tool]
     _pending: dict[str, str] = field(default_factory=dict, repr=False)
     _approved: set[str] = field(default_factory=set, repr=False)
+    token_ttl_seconds: float = 300.0
+    _issued_at: dict[str, float] = field(default_factory=dict, repr=False)
+
+    def __post_init__(self) -> None:
+        if not 0 < self.token_ttl_seconds <= 3600:
+            raise ValueError("token_ttl_seconds must be in (0, 3600]")
+
+    def _require_live(self, token: str) -> None:
+        issued = self._issued_at.get(token)
+        if issued is None or time.monotonic() - issued >= self.token_ttl_seconds:
+            self.reject(token)
+            raise ApprovalInvalid("Unknown or expired approval token")
 
     def request_approval(self, name: str, args: dict[str, Any]) -> str:
         tool = self._get(name)
@@ -39,15 +52,16 @@ class ToolBroker:
         fingerprint = _digest(name, args)
         token = secrets.token_urlsafe(32)
         self._pending[token] = fingerprint
+        self._issued_at[token] = time.monotonic()
         return token
 
     def approve(self, token: str) -> None:
-        if token not in self._pending:
-            raise ApprovalInvalid("Unknown approval token")
+        self._require_live(token)
         self._approved.add(token)
 
     def reject(self, token: str) -> None:
         self._pending.pop(token, None)
+        self._issued_at.pop(token, None)
         self._approved.discard(token)
 
     def invoke(self, name: str, args: dict[str, Any], *, approval_token: str | None = None) -> Any:
@@ -55,12 +69,14 @@ class ToolBroker:
         if tool.side_effects:
             if approval_token is None or approval_token not in self._approved:
                 raise ApprovalRequired("Explicit human approval required")
+            self._require_live(approval_token)
             fingerprint = _digest(name, args)
             if self._pending.get(approval_token) != fingerprint:
                 raise ApprovalInvalid("Approval does not match this call")
             # Consume before invocation: even failed operations require a new approval.
             self._approved.remove(approval_token)
             del self._pending[approval_token]
+            del self._issued_at[approval_token]
         return tool.handler(**args)
 
     def _get(self, name: str) -> Tool:

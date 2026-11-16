@@ -77,9 +77,9 @@ See [Guardian usage and optional LLM adapter](docs/guardian.md).
 
 ## Security and limitations
 
-No shell commands, code, or network calls are executed by the default runner. External agent handlers and the optional provider adapter have their own trust boundaries. Capabilities are labels, not an enforcement boundary for arbitrary custom handlers. Do not send secrets or private code to external providers without authorization. No autonomous PR commenting, sandboxed execution, persistent memory, built-in approval UI, or vulnerability guarantee. The approval broker requires the host application to obtain genuine human consent.
+No shell commands, code, or network calls are executed by the default runner. External agent handlers and the optional provider adapter have their own trust boundaries. Capabilities are labels, not an enforcement boundary for arbitrary custom handlers. Do not send secrets or private code to external providers without authorization. No autonomous PR commenting, sandboxed execution, built-in approval UI, or vulnerability guarantee. An experimental explicit SQLite memory store is available; it is not encrypted and is not automatically connected to prompts. The approval broker requires the host application to obtain genuine human consent.
 
-## Development priorities
+## Research evaluation and local memory\n\n- **Atlas SI Lab:** deterministic offline evaluation of agent task outputs with reproducible example: `python examples/si_lab_demo.py`. This is not a measure of AGI or ASI; see [research documentation](docs/SI_LAB.md).\n- **Local memory:** opt-in SQLite note storage with literal text search, explicit deletion, and no automatic conversation retention; see [memory guide](docs/LOCAL_MEMORY.md).\n- **Contributing and security:** see [security policy](SECURITY.md), [contribution guide](CONTRIBUTING.md), and [open-source project overview](docs/OSS_APPLICATION.md).\n\n## Development priorities
 
 The next milestones are tracked in [the engineering roadmap](docs/ENGINEERING_ROADMAP.md). Priorities are security, repeatable benchmarks, desktop-control reliability, and accessible Arabic/English workflows. Features described as planned are not implemented.
 

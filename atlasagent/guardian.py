@@ -20,6 +20,8 @@ _RULES = (
 )
 
 def review_unified_diff(diff: str, *, max_chars: int = 1_000_000) -> list[Finding]:
+    if max_chars < 0:
+        raise ValueError("max_chars must be non-negative")
     if len(diff) > max_chars:
         raise ValueError("Diff exceeds review limit")
     findings: list[Finding] = []
@@ -41,7 +43,7 @@ def review_unified_diff(diff: str, *, max_chars: int = 1_000_000) -> list[Findin
                     if pattern.search(content):
                         findings.append(Finding(path, line, rule, severity, message))
             line += 1
-        elif raw.startswith(" ") and not raw.startswith("    "):
+        elif raw.startswith(" "):
             line += 1
     return findings
 

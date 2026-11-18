@@ -92,3 +92,7 @@ MIT licensed.
 ## Experimental local desktop control
 
 On your own Windows computer install `python -m pip install -e ".[desktop]"` and run `python -m atlasagent.desktop_cli`. This opt-in CLI supports real mouse clicks, typing and scrolling, with explicit approval for every action. It is **not yet autonomous**, cannot interpret screenshots, and is **not exposed through the web API**. See [desktop setup and safety](docs/desktop.md).
+
+## Experimental visual desktop assistant
+
+With a configured external vision-capable model, the local CLI can capture the screen, propose one click/type/scroll action at a time, and request explicit human approval for each action. **Screenshots are uploaded to the configured provider.** This is not an autonomous coding or GitHub PR agent. See [visual agent setup and safety](docs/VISUAL_AGENT.md).

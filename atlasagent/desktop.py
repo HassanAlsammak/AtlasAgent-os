@@ -17,6 +17,15 @@ class DesktopAdapter:
         self.gui.FAILSAFE = True  # Move pointer to top-left corner to abort.
         self.gui.PAUSE = 0.15
 
+    def capture(self) -> tuple[bytes, int, int]:
+        """Capture an in-memory PNG; callers must obtain screenshot consent."""
+        from io import BytesIO
+        screenshot = self.gui.screenshot()
+        width, height = screenshot.size
+        buffer = BytesIO()
+        screenshot.save(buffer, format="PNG")
+        return buffer.getvalue(), width, height
+
     def observe(self) -> str:
         width, height = self.gui.size()
         x, y = self.gui.position()
